@@ -1,7 +1,7 @@
 const PRODUCTS = [
   {
     id: "prod-001",
-    name: "ro Stealth Pack",
+    name: "Pro Stealth Pack",
     description:
       "Premium engineered anti-theft shell backpack for modern explorers and daily train commutes.",
     price: 64.0,
