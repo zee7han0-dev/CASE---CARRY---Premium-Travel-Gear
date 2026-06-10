@@ -201,7 +201,41 @@ window.handleOrderSubmission = function (event) {
   const phoneField = formElement.querySelector('input[name="Phone"]');
   const zipField = formElement.querySelector('input[name="Zip Code"]');
 
-  // Save order details temporarily — payment step will finalize it
+  // ---- PHONE VALIDATION ----
+  // Pakistan numbers: must start with 03 and be exactly 11 digits (e.g. 03001234567)
+  // Also accepts +92 format: +923001234567
+  const rawPhone = phoneField ? phoneField.value.trim() : "";
+  const phoneDigits = rawPhone.replace(/[\s\-\(\)]/g, ""); // strip spaces, dashes, brackets
+  const pakistanPhoneRegex = /^(\+92|0092|0)3[0-9]{9}$/;
+
+  if (!pakistanPhoneRegex.test(phoneDigits)) {
+    showFieldError(
+      phoneField,
+      "Please enter a valid Pakistani phone number (e.g. 03001234567 or +923001234567)",
+    );
+    phoneField.focus();
+    return;
+  } else {
+    clearFieldError(phoneField);
+  }
+
+  // ---- POSTAL CODE VALIDATION ----
+  // Pakistan postal codes are exactly 5 digits (e.g. 38000 for Faisalabad)
+  const rawZip = zipField ? zipField.value.trim() : "";
+  const pakistanZipRegex = /^[0-9]{5}$/;
+
+  if (!pakistanZipRegex.test(rawZip)) {
+    showFieldError(
+      zipField,
+      "Please enter a valid 5-digit Pakistani postal code (e.g. 38000)",
+    );
+    zipField.focus();
+    return;
+  } else {
+    clearFieldError(zipField);
+  }
+
+  // ---- ALL VALID — save and proceed ----
   pendingOrderData = {
     customerName: nameField ? nameField.value : "Customer",
     email: emailField ? emailField.value : "",
@@ -211,10 +245,31 @@ window.handleOrderSubmission = function (event) {
     total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
   };
 
-  // Close checkout modal, open payment modal
   toggleCheckoutModal(false);
   setTimeout(() => openPaymentModal(), 300);
 };
+
+// Show a red error message below a field
+function showFieldError(field, message) {
+  // Remove any existing error on this field first
+  clearFieldError(field);
+
+  field.classList.add("border-rose-400", "bg-rose-50");
+
+  const errorEl = document.createElement("p");
+  errorEl.className =
+    "field-error-msg text-rose-500 text-[11px] font-semibold mt-1.5 flex items-center gap-1";
+  errorEl.innerHTML = `<span>⚠️</span> ${message}`;
+
+  field.parentNode.appendChild(errorEl);
+}
+
+// Remove error state from a field
+function clearFieldError(field) {
+  field.classList.remove("border-rose-400", "bg-rose-50");
+  const existingError = field.parentNode.querySelector(".field-error-msg");
+  if (existingError) existingError.remove();
+}
 
 // ==========================================
 // 7. PAYMENT METHOD MODAL
