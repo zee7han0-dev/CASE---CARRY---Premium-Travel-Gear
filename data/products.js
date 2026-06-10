@@ -6,7 +6,7 @@ const PRODUCTS = [
       "Looking for the perfect birthday gift for toddlers? This battery-operated Bump and Go Monkey Ice Cream Toy is an interactive musical toy featuring a cute cartoon animal driving an ice cream cart trolley. Equipped with smart omnidirectional steering, this electric toy car automatically changes direction upon hitting obstacles, keeping your baby engaged for hours. With vibrant flashing LED lights and catchy melodies, this durable plastic pretend play set stimulates sensory development, hand-eye coordination, and gross motor skills. Ideal baby toy for 1, 2, and 3-year-old boys and girls.",
     price: 1999,
     color: "Colorful",
-    image: "/data/img/bump-and-go-monkey-icecream-toy.jpg",
+    image: "/data/img/bump-and-go-monkey-icecream-toy.jpeg",
   },
   {
     id: "prod-002",
